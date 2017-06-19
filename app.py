@@ -1,3 +1,5 @@
+# web-app for API image manipulation
+
 from flask import Flask, request, render_template, send_from_directory
 import os
 from PIL import Image
@@ -32,7 +34,7 @@ def upload():
     if (ext == ".jpg") or (ext == ".png") or (ext == ".bmp"):
         print("File accepted")
     else:
-        return render_template("error.html", message="The selected file is not supported")
+        return render_template("error.html", message="The selected file is not supported"), 400
 
     # save file
     destination = "/".join([target, filename])
@@ -69,8 +71,10 @@ def flip():
     # retrieve parameters from html form
     if 'horizontal' in request.form['mode']:
         mode = 'horizontal'
-    else:
+    elif 'vertical' in request.form['mode']:
         mode = 'vertical'
+    else:
+        return render_template("error.html", message="Mode not supported (vertical - horizontal)"), 400
     filename = request.form['image']
 
     # open and process image
@@ -127,7 +131,7 @@ def crop():
     if crop_possible:
         img.crop((x1, y1, x2, y2)).show()
     else:
-        return render_template("error.html", message="Crop dimensions not valid")
+        return render_template("error.html", message="Crop dimensions not valid"), 400
     return '', 204
 
 

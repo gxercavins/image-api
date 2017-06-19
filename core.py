@@ -1,3 +1,5 @@
+# Image manipulation API
+
 from flask import Flask, render_template, send_from_directory, redirect
 import os
 from PIL import Image
@@ -20,7 +22,7 @@ def rotate(angle, filename):
     # check for valid angle
     angle = int(angle)
     if not -360 < angle < 360:
-        return render_template("error.html", message="Invalid angle parameter (-359 to 359)")
+        return render_template("error.html", message="Invalid angle parameter (-359 to 359)"), 400
 
     # open and process image
     target = os.path.join(APP_ROOT, 'static/images')
@@ -54,7 +56,7 @@ def flip(mode, filename):
     elif mode == 'vertical':
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
     else:
-        return render_template("error.html", message="Invalid mode (vertical or horizontal)")
+        return render_template("error.html", message="Invalid mode (vertical or horizontal)"), 400
 
     # save and return image
     destination = "/".join([target, 'temp.png'])
@@ -101,7 +103,7 @@ def crop(x1, y1, x2, y2, filename):
     if crop_possible:
         img = img.crop((x1, y1, x2, y2))
     else:
-        return render_template("error.html", message="Crop dimensions not valid")
+        return render_template("error.html", message="Crop dimensions not valid"), 400
 
     # save and return image
     destination = "/".join([target, 'temp.png'])
@@ -119,7 +121,7 @@ def blend(alpha, filename1, filename2):
     # check for valid alpha
     alpha = float(alpha)
     if not 0 <= alpha <= 100:
-        return render_template("error.html", message="Invalid alpha value (0-100)")
+        return render_template("error.html", message="Invalid alpha value (0-100)"), 400
 
     #open images
     target = os.path.join(APP_ROOT, 'static/images')
