@@ -21,6 +21,7 @@ where `mode` can either be `vertical` or `horizontal` and `filename` is the imag
 ```
 http://127.0.0.1:5000/flip/vertical/minimalistic-coca-cola_00411260.jpg
 ```
+![flip](https://user-images.githubusercontent.com/29493411/27295171-3b04a502-551c-11e7-82b1-9283f49a050d.PNG)
 
 ### Rotate
 ```
@@ -30,6 +31,7 @@ where `angle` can take any value between 0 and 359 degrees. A positive value ind
 ```
 http://127.0.0.1:5000/rotate/30/Star-War-l.jpg
 ```
+![rotate](https://user-images.githubusercontent.com/29493411/27295173-3b07127e-551c-11e7-89e6-d76a4fee731e.PNG)
 
 ### Crop
 ```
@@ -39,6 +41,7 @@ with the start and stop point coordinates, (`x1, y1`) and (`x2, y2`), respective
 ```
 http://127.0.0.1:5000/crop/150/250/350/500/The_Scream.jpg
 ```
+![crop](https://user-images.githubusercontent.com/29493411/27295172-3b06dade-551c-11e7-9b92-0ae0c20d5981.PNG)
 
 ### Blend
 ```
@@ -48,9 +51,16 @@ where `alpha`, in % (between 0 and 100), is the weight of the first image in the
 ```
 http://127.0.0.1:5000/blend/50/3x1gKAL.png/blend.jpg
 ```
+![blend](https://user-images.githubusercontent.com/29493411/27295174-3b09945e-551c-11e7-94d9-7eecd4fae415.PNG)
 
 ## Web application
-Run `app.py` and navigate to `localhost:5000`. Use the `SELECT FILE` button to upload the desired file. If successful, the browser will redirect to the processing page.
+Run `app.py` and navigate to `localhost:5000`. Use the `SELECT FILE` button to upload the desired file. 
+
+![web1](https://user-images.githubusercontent.com/29493411/27295175-3b0a1af0-551c-11e7-94fd-7b4106330537.PNG)
+
+If successful, the browser will redirect to the processing page.
+
+![web2](https://user-images.githubusercontent.com/29493411/27295176-3b0d56de-551c-11e7-9cc8-0628eecd22d0.PNG)
 
 Input the desired parameters to apply the corresponding transformation. The modified image will be opened with your default image viewing program. The parameters are now sent through the form data with a post method, instead of being passed as arguments in the GET request. So, this app showcases a different approach to API functionality. The different transformations are:
 
@@ -59,4 +69,8 @@ Input the desired parameters to apply the corresponding transformation. The modi
 * Crop: input the start and stop point coordinates, (`x1, y1`) and (`x2, y2`), respectively. Click `GO` to proceed. Will be validated by the API.
 * Blend: input alpha (%) between 0 and 100, html validated. The image will be blend with the stock photo `blend.jpg`. The higher the alpha parameter, the more weight will be assigned to the stock photo (i.e. for alpha equals 0 the image will remain unchanged). Click `GO` to proceed.
 
+## License
+This API is provided under the MIT license.
 
+## Issues
+Report any issue to the GitHub issue tracker.
