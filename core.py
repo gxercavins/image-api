@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, redirect
 import os
 from PIL import Image
 
@@ -10,7 +10,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 # default access redirects to API documentation
 @app.route("/")
 def main():
-    return '', 204
+    return redirect("https://github.com/gxercavins/image-api/blob/master/README.md", code=302)
 
 
 # rotate filename the specified degrees
