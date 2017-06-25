@@ -83,18 +83,27 @@ def crop(x1, y1, x2, y2, filename):
     [x1, y1, x2, y2] = [int(x1), int(y1), int(x2), int(y2)]
 
     crop_possible = True
-    if not 0 <= x1 < width:
-        crop_possible = False
-    if not 0 < x2 <= width:
-        crop_possible = False
-    if not 0 <= y1 < height:
-        crop_possible = False
-    if not 0 < y2 <= height:
-        crop_possible = False
-    if not x1 < x2:
-        crop_possible = False
-    if not y1 < y2:
-        crop_possible = False
+    
+    while True:
+        if not 0 <= x1 < width:
+            crop_possible = False
+            break
+        if not 0 < x2 <= width:
+            crop_possible = False
+            break
+        if not 0 <= y1 < height:
+            crop_possible = False
+            break
+        if not 0 < y2 <= height:
+            crop_possible = False
+            break
+        if not x1 < x2:
+            crop_possible = False
+            break
+        if not y1 < y2:
+            crop_possible = False
+            break
+        break
 
     # process image
     if crop_possible:
