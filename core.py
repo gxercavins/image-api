@@ -80,10 +80,7 @@ def crop(x1, y1, x2, y2, filename):
     height = img.size[1]
 
     # check for valid crop parameters
-    x1 = int(x1)
-    y1 = int(y1)
-    x2 = int(x2)
-    y2 = int(y2)
+    [x1, y1, x2, y2] = [int(x1), int(y1), int(x2), int(y2)]
 
     crop_possible = True
     if not 0 <= x1 < width:
