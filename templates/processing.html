@@ -46,10 +46,10 @@
  
                 <h4>Crop</h4>
                 <form id="form-crop"" action="{{ url_for('crop') }}" method="POST" enctype="multipart/form-data">
-                  <input type="number" placeholder="x1" min="0" name="x1">  
-                  <input type="number" placeholder="y1" min="0" name="y1">                 
-                  <input type="number" placeholder="x2" min="0" name="x2">                 
-                  <input type="number" placeholder="y2" min="0" name="y2">                                
+                  <input type="number" placeholder="x1" min="0" name="x1" required>  
+                  <input type="number" placeholder="y1" min="0" name="y1" required>                 
+                  <input type="number" placeholder="x2" min="0" name="x2" required>                 
+                  <input type="number" placeholder="y2" min="0" name="y2" required>                                
                   <button id="btnCrop" class="btn btn-lg btn-success" type="submit">Go</button>
 			  <input type="text" class="hidden" name="image" value="{{ image_name }}">
                 </form>                
@@ -58,14 +58,14 @@
             <div class="col-lg-6">
                 <h4>Rotate</h4>
                 <form id="form-rotate" action="{{ url_for('rotate') }}" method="POST" enctype="multipart/form-data"> 
-			  <input type="number" name="angle" min="-359" max="359" placeholder="degrees">        
+			  <input type="number" name="angle" min="-359" max="359" placeholder="degrees" required>        
                   <button id="btnRotate" class="btn btn-lg btn-success" type="submit">Go</button>
 	  		  <input type="text" class="hidden" name="image" value="{{ image_name }}">
                 </form>
  
                 <h4>Blend</h4>
                 <form id="form-blend"" action="{{ url_for('blend') }}" method="POST" enctype="multipart/form-data">  
-		       <input type="number" name="alpha" placeholder="alpha(%)" min="0" max="100">               
+		       <input type="number" name="alpha" placeholder="alpha(%)" min="0" max="100" required>               
                   <button id="btnBlend" class="btn btn-lg btn-success" type="submit">Go</button>
 	  	       <input type="text" class="hidden" name="image" value="{{ image_name }}">
                 </form>
