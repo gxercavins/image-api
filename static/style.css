@@ -25,3 +25,7 @@ div#image-container > img {
 #form-blend > input[type=number] {
     width: 77px;
 } 
+
+.hidden {
+	display: none !important;
+}

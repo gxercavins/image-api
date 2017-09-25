@@ -59,9 +59,13 @@ def rotate():
     img = Image.open(destination)
     img = img.rotate(-1*int(angle))
 
-    # show modified image
-    img.show()
-    return '', 204
+    # save and return image
+    destination = "/".join([target, 'temp.png'])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img.save(destination)
+
+    return send_image('temp.png')
 
 
 # flip filename 'vertical' or 'horizontal'
@@ -88,9 +92,13 @@ def flip():
     else:
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
 
-    # show modified image
-    img.show()
-    return '', 204
+    # save and return image
+    destination = "/".join([target, 'temp.png'])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img.save(destination)
+
+    return send_image('temp.png')
 
 
 # crop filename from (x1,y1) to (x2,y2)
@@ -129,7 +137,14 @@ def crop():
 
     # crop image and show
     if crop_possible:
-        img.crop((x1, y1, x2, y2)).show()
+        img = img.crop((x1, y1, x2, y2))
+        
+        # save and return image
+        destination = "/".join([target, 'temp.png'])
+        if os.path.isfile(destination):
+            os.remove(destination)
+        img.save(destination)
+        return send_image('temp.png')
     else:
         return render_template("error.html", message="Crop dimensions not valid"), 400
     return '', 204
@@ -163,9 +178,15 @@ def blend():
         img2 = img2.convert('L')
 
     # blend and show image
-    Image.blend(img1, img2, float(alpha)/100).show()
+    img = Image.blend(img1, img2, float(alpha)/100)
 
-    return '', 204
+     # save and return image
+    destination = "/".join([target, 'temp.png'])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img.save(destination)
+
+    return send_image('temp.png')
 
 
 # retrieve file from 'static/images' directory
@@ -176,3 +197,4 @@ def send_image(filename):
 
 if __name__ == "__main__":
     app.run()
+
