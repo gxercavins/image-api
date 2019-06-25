@@ -3,6 +3,8 @@ Image Processing API written in Python, using the Pillow library for image manip
 
 For a live demo, please visit this [link](https://image-demo-dot-gxt-proj1.appspot.com/). The App has been deployed to the Google Cloud Platform using App Engine.
 
+Full credits for the code go to [@gxercavins](https://github.com/gxercavins/). I have added a Dockerfile and hosted a docker repository at `samleo8/pyimage-test` (https://hub.docker.com/r/samleo8/pyimage-test)
+
 ## Getting started
 The API includes three Python files:
 * `core.py`: includes the basic calls of the API. Run the file and use `GET` requests on `localhost:5000`. For more details please refer to the documentation section in this file.
@@ -10,6 +12,21 @@ The API includes three Python files:
 * `test.py`: a file to test API requests by checking the received http status codes. `core.py` needs to be running.
 
 Other files have been included for GCP deployment: `app.yaml`, `appengine_config.py` and `requirements.txt`.
+
+### Running in Docker
+To build this application using Docker,
+
+```
+docker build . -t image-api
+```
+
+To run the application,
+
+```
+docker run -d -p 5000:5000 image-api
+```
+
+You can then view the application at http://localhost:5000
 
 ## Dependencies
 Python installation needs the `PIL` library (image processing), `flask` with its dependencies (`werkzeug`, `jinja2`, `markupsafe`, `itsdangerous`), testing libraries (`unittest` and `requests`) and `gunicorn` to provide an entrypoint for the live deployment. It is recommended to use the provided `requirements.txt` file:
@@ -63,7 +80,7 @@ http://127.0.0.1:5000/blend/50/3x1gKAL.png/blend.jpg
 ## Web application
 To test the app localy, run `app.py` and navigate to `localhost:5000`. Otherwise, navigate to the live demo.
 
-Use the `SELECT FILE` button to upload the desired file. 
+Use the `SELECT FILE` button to upload the desired file.
 
 ![web1](https://user-images.githubusercontent.com/29493411/27295175-3b0a1af0-551c-11e7-94fd-7b4106330537.PNG)
 
