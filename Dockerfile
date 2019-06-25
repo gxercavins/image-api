@@ -3,8 +3,9 @@ FROM debian:wheezy
 #TODO: Use alpine (some issues with dependencies tho)
 FROM python:3.6
 
-COPY . /app
+# Copy the respective files into their directories
 WORKDIR /app
+COPY . /app
 
 # Install system dependencies
 #
@@ -18,6 +19,7 @@ WORKDIR /app
 #		libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev
 # 		liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
 #
+
 RUN apt-get update && apt-get install -y \
 			python-dev python-pip python-setuptools \
 			libffi-dev libxml2-dev libxslt1-dev \
@@ -32,5 +34,4 @@ RUN pip install Pillow
 # Expose web GUI
 EXPOSE 5000
 
-#CMD [ "gunicorn", "-b", ":5000", "app:app" ]
 CMD [ "python", "app.py" ]
