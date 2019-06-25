@@ -1,0 +1,8 @@
+Pillow
+flask
+werkzeug
+jinja2
+markupsafe
+itsdangerous
+requests
+gunicorn
