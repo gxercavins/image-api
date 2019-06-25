@@ -138,7 +138,7 @@ def crop():
     # crop image and show
     if crop_possible:
         img = img.crop((x1, y1, x2, y2))
-        
+
         # save and return image
         destination = "/".join([target, 'temp.png'])
         if os.path.isfile(destination):
@@ -196,5 +196,4 @@ def send_image(filename):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
-
+    app.run(host='0.0.0.0')
