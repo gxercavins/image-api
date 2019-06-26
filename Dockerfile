@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
 
 # Add the dependencies to the container and install the python dependencies
 ADD requirements /tmp/requirements.txt
+RUN pip install numpy
 RUN pip install -r /tmp/requirements.txt && rm /tmp/requirements.txt
 RUN pip install Pillow
 
