@@ -169,7 +169,7 @@ def yolo():
 	img = cv2.imread(destination1)
 	img2 = pydarknet.Image(img)
 
-	destination = "/".join([target, 'yolo.jpg'])
+	destination = "/".join([target, 'temp.png'])
 
 	if os.path.isfile(destination):
 		print("Existing file found at "+destination)
@@ -190,18 +190,11 @@ def yolo():
 					cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
 
 	# save and return image
-	if os.path.isfile(destination):
-		print("Something is wrong here...")
-
 	print("Writing processed image to "+destination)
+	
 	cv2.imwrite(destination, img)
 
-	while not os.path.isfile(destination):
-		print("Image processing...")
-
-	print("Image processed!")
-
-	return send_image('yolo.jpg')
+	return send_image('temp.png')
 	#return render_template("image.html", image_name='yolo.jpg')
 
 # retrieve file from 'static/images' directory
