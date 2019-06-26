@@ -9,6 +9,11 @@ app = Flask(__name__)
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+# Pre-load the YOLO Detector
+yversions = ["v2"]#, "v3"]
+darknet = {}
+for yversion in yversions:
+	darknet[yversion] = pydarknet.Detector(bytes("yolo/yolo" + yversion + ".cfg", encoding="utf-8"), bytes("yolo/yolo" + yversion + ".weights", encoding="utf-8"), 0, bytes("yolo/coco.data", encoding="utf-8"))
 
 # default access page
 @app.route("/")
@@ -72,7 +77,6 @@ def rotate():
 # flip filename 'vertical' or 'horizontal'
 @app.route("/flip", methods=["POST"])
 def flip():
-
 	# retrieve parameters from html form
 	if 'horizontal' in request.form['mode']:
 		mode = 'horizontal'
@@ -157,9 +161,6 @@ def yolo():
 	filename1 = request.form['image']
 	yversion = request.form['yolo_version']
 
-	# startup the YOLO Detector
-	net = pydarknet.Detector(bytes("yolo/yolo" + yversion + ".cfg", encoding="utf-8"), bytes("yolo/yolo" + yversion + ".weights", encoding="utf-8"), 0, bytes("yolo/coco.data", encoding="utf-8"))
-
 	# open images
 	target = os.path.join(APP_ROOT, 'static/images')
 	destination1 = "/".join([target, filename1])
@@ -169,7 +170,7 @@ def yolo():
 	img2 = pydarknet.Image(img)
 
 	start_time = time.time()
-	results = net.detect(img2)
+	results = darknet[yversion].detect(img2)
 	end_time = time.time()
 	print(results)
 	print("Elapsed Time:", end_time - start_time)
@@ -178,16 +179,17 @@ def yolo():
 		x, y, w, h = bounds
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
 					 (int(x + w / 2), int(y + h / 2)), (255, 0, 0), thickness=2)
-		cv2.putText(img, str(cat.decode("utf-8")), (int(x), int(y)),
-					cv2.FONT_HERSHEY_DUPLEX, 4, (0, 0, 255), thickness=2)
+		cv2.putText(img, str(cat.decode("utf-8")), (int(x), int(y)-10),
+					cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), thickness=1, lineType=cv2.LINE_AA)
 
 	# save and return image
 	destination = "/".join([target, 'temp.png'])
 	if os.path.isfile(destination):
 		os.remove(destination)
+
 	cv2.imwrite(destination, img)
 
-	return send_image('temp.png')
+	return send_image(destination)
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')

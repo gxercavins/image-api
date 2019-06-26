@@ -23,6 +23,6 @@ sed -i 's/\/home\/pjreddie\///g' ./coco.data
 
 wget -O ./coco.names https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names
 
-echo "Downloading yolov3 weights"
+echo "Downloading yolo v2 and v3 weights"
 wget -O ./yolov2.weights https://pjreddie.com/media/files/yolov2.weights
 wget -O ./yolov3.weights https://pjreddie.com/media/files/yolov3.weights
