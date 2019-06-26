@@ -3,7 +3,7 @@ import os
 from PIL import Image
 import pydarknet #we have to use pydarknet.Image and pydarknet.Detector since it conflicts with PIL Image
 import cv2
-import numpy
+import numpy as np
 import time
 
 app = Flask(__name__)
