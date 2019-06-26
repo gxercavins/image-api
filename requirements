@@ -6,3 +6,7 @@ markupsafe
 itsdangerous
 requests
 gunicorn
+numpy
+cython
+opencv-python
+yolo34py
