@@ -1,8 +1,8 @@
-# web-app for API image manipulation
-
 from flask import Flask, request, render_template, send_from_directory
 import os
 from PIL import Image
+import pydarknet #we have to use pydarknet.Image and pydarknet.Detector since it conflicts with PIL Image
+import cv2
 
 app = Flask(__name__)
 
@@ -149,51 +149,48 @@ def crop():
         return render_template("error.html", message="Crop dimensions not valid"), 400
     return '', 204
 
-
-# blend filename with stock photo and alpha parameter
-@app.route("/blend", methods=["POST"])
+# apply YOLO object detection
+@app.route("/yolo", methods=["POST"])
 def blend():
     # retrieve parameters from html form
-    alpha = request.form['alpha']
     filename1 = request.form['image']
+	yversion = request.form['yolo_version']
+
+	# startup the YOLO Detector
+	net = pydarknet.Detector(bytes("yolo/yolo" + yversion + ".cfg", encoding="utf-8"), bytes("yolo" +
+	               yversion + ".weights", encoding="utf-8"), 0, bytes("yolo/coco.data", encoding="utf-8"))
 
     # open images
     target = os.path.join(APP_ROOT, 'static/images')
-    filename2 = 'blend.jpg'
     destination1 = "/".join([target, filename1])
-    destination2 = "/".join([target, filename2])
 
-    img1 = Image.open(destination1)
-    img2 = Image.open(destination2)
+    # img1 = Image.open(destination1)
+	img = cv2.imread(destination1)
+    img2 = Image(img)
 
-    # resize images to max dimensions
-    width = max(img1.size[0], img2.size[0])
-    height = max(img1.size[1], img2.size[1])
+    start_time = time.time()
+    results = net.detect(img2)
+    end_time = time.time()
+    print(results)
+    print("Elapsed Time:", end_time - start_time)
 
-    img1 = img1.resize((width, height), Image.ANTIALIAS)
-    img2 = img2.resize((width, height), Image.ANTIALIAS)
-
-    # if image in gray scale, convert stock image to monochrome
-    if len(img1.mode) < 3:
-        img2 = img2.convert('L')
-
-    # blend and show image
-    img = Image.blend(img1, img2, float(alpha)/100)
+    for cat, score, bounds in results:
+        x, y, w, h = bounds
+        cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
+                      (int(x + w / 2), int(y + h / 2)), (255, 0, 0), thickness=2)
+		cv2.putText(img, str(cat.decode("utf-8")), (int(x), int(y)),
+		            cv2.FONT_HERSHEY_DUPLEX, 4, (0, 0, 255), thickness=2)
 
      # save and return image
-    destination = "/".join([target, 'temp.png'])
-    if os.path.isfile(destination):
-        os.remove(destination)
-    img.save(destination)
-
-    return send_image('temp.png')
-
+	 destination = "/".join([target, 'temp.png'])
+	 return send_image('temp.png')
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
 def send_image(filename):
     return send_from_directory("static/images", filename)
 
-
+# run with host 0.0.0.0
+# this is needed for exposing port outside docker container
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

@@ -1,84 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
-    <title>Process your image</title>
- 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
- 
-    <link href="../static/jumbotron-narrow.css" rel="stylesheet">
+	<title>Process your image</title>
 
-    <link href="../static/style.css" rel="stylesheet">
- 
- 
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+	<link href="../static/jumbotron-narrow.css" rel="stylesheet">
+
+	<link href="../static/style.css" rel="stylesheet">
+
+
 </head>
- 
+
 <body>
- 
-    <div class="container">
-        <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="/">Home</a>
-                    </li>
-                    <li role="presentation"><a href="https://github.com/gxercavins">gxercavins</a>
-                    </li>
-                </ul>
-            </nav>
-            <h3 class="text-muted">Process your image</h3>
-        </div>
- 
-        <div class="jumbotron">
-		 <div id="image-container">
-            <img src=" {{url_for('send_image', filename=image_name)}} " style="max-width: 560px;">
-            </div>
-          </div>
- 
-        <div class="row marketing">
-            <div class="col-lg-6">
-                <h4>Flip</h4>
-                <form id="form-flip" action="{{ url_for('flip') }}" method="POST" enctype="multipart/form-data">        
-                  <button id="btnFlipV" class="btn btn-lg btn-success" type="submit" name="mode" value="vertical">Vertical</button>
-                  <button id="btnFlipH" class="btn btn-lg btn-success" type="submit" name="mode" value="horizontal">Horizontal</button>
-			  <input type="text" class="hidden" name="image" value="{{ image_name }}">  
 
-                </form>
- 
-                <h4>Crop</h4>
-                <form id="form-crop"" action="{{ url_for('crop') }}" method="POST" enctype="multipart/form-data">
-                  <input type="number" placeholder="x1" min="0" name="x1" required>  
-                  <input type="number" placeholder="y1" min="0" name="y1" required>                 
-                  <input type="number" placeholder="x2" min="0" name="x2" required>                 
-                  <input type="number" placeholder="y2" min="0" name="y2" required>                                
-                  <button id="btnCrop" class="btn btn-lg btn-success" type="submit">Go</button>
-			  <input type="text" class="hidden" name="image" value="{{ image_name }}">
-                </form>                
-            </div>
- 
-            <div class="col-lg-6">
-                <h4>Rotate</h4>
-                <form id="form-rotate" action="{{ url_for('rotate') }}" method="POST" enctype="multipart/form-data"> 
-			  <input type="number" name="angle" min="-359" max="359" placeholder="degrees" required>        
-                  <button id="btnRotate" class="btn btn-lg btn-success" type="submit">Go</button>
-	  		  <input type="text" class="hidden" name="image" value="{{ image_name }}">
-                </form>
- 
-                <h4>Blend</h4>
-                <form id="form-blend"" action="{{ url_for('blend') }}" method="POST" enctype="multipart/form-data">  
-		       <input type="number" name="alpha" placeholder="alpha(%)" min="0" max="100" required>               
-                  <button id="btnBlend" class="btn btn-lg btn-success" type="submit">Go</button>
-	  	       <input type="text" class="hidden" name="image" value="{{ image_name }}">
-                </form>
-                
-            </div>
-        </div>
- 
-        <footer class="footer">
-            <p>&copy; gxercavins 2017. Using Python, Flask and PIL.</p>
-        </footer>
- 
-    </div>
+	<div class="container">
+		<div class="header">
+			<nav>
+				<ul class="nav nav-pills pull-right">
+					<li role="presentation" class="active"><a href="/">Home</a>
+					</li>
+					<li role="presentation"><a href="https://github.com/gxercavins">gxercavins</a>
+					</li>
+					<li role="presentation"><a href="https://github.com/Samleo8">Samleo8</a>
+					</li>
+				</ul>
+			</nav>
+			<h3 class="text-muted">Process your image</h3>
+		</div>
+
+		<div class="jumbotron">
+			<div id="image-container">
+				<img src=" {{url_for('send_image', filename=image_name)}} " style="max-width: 560px;">
+			</div>
+		</div>
+
+		<div class="row marketing">
+			<div class="col-lg-6">
+				<h4>Flip</h4>
+				<form id="form-flip" action="{{ url_for('flip') }}" method="POST" enctype="multipart/form-data">
+					<button id="btnFlipV" class="btn btn-lg btn-success" type="submit" name="mode" value="vertical">Vertical</button>
+					<button id="btnFlipH" class="btn btn-lg btn-success" type="submit" name="mode" value="horizontal">Horizontal</button>
+					<input type="text" class="hidden" name="image" value="{{ image_name }}">
+
+				</form>
+
+				<h4>Crop</h4>
+				<form id="form-crop"" action=" {{ url_for('crop') }}" method="POST" enctype="multipart/form-data">
+					<input type="number" placeholder="x1" min="0" name="x1" required>
+					<input type="number" placeholder="y1" min="0" name="y1" required>
+					<input type="number" placeholder="x2" min="0" name="x2" required>
+					<input type="number" placeholder="y2" min="0" name="y2" required>
+					<button id="btnCrop" class="btn btn-lg btn-success" type="submit">Go</button>
+					<input type="text" class="hidden" name="image" value="{{ image_name }}">
+				</form>
+			</div>
+
+			<div class="col-lg-6">
+				<h4>Rotate</h4>
+				<form id="form-rotate" action="{{ url_for('rotate') }}" method="POST" enctype="multipart/form-data">
+					<input type="number" name="angle" min="-359" max="359" placeholder="degrees" required>
+					<button id="btnRotate" class="btn btn-lg btn-success" type="submit">Go</button>
+					<input type="text" class="hidden" name="image" value="{{ image_name }}">
+				</form>
+
+				<h4>Blend</h4>
+				<form id="form-blend"" action=" {{ url_for('yolo') }}" method="POST" enctype="multipart/form-data">
+					<input type="radio" name="yolo_version" value="v2"> v2<br>
+					<input type="radio" name="yolo_version" value="v3"> v3<br>
+					<button id="btnYolo" class="btn btn-lg btn-success" type="submit">YOLO!</button>
+					<input type="text" class="hidden" name="image" value="{{ image_name }}">
+				</form>
+
+			</div>
+		</div>
+
+		<footer class="footer">
+			<p>&copy; gxercavins 2017. Using Python, Flask and PIL.</p>
+		</footer>
+
+	</div>
 </body>
- 
-</html>
 
+</html>

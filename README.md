@@ -34,6 +34,8 @@ Python installation needs the `PIL` library (image processing), `flask` with its
 sudo pip install -r requirements.txt
 ```
 
+To run the YOLO object detector, you need to download the weights using the script in `yolo/download_cfg.sh`
+
 ## Documentation
 The different calls can be interfaced with `GET` methods. All images must be located in the `static/images` folder, or otherwise specify the relative path, from that folder, in `filename` parameter. If the request is correct, the modified image will be returned. The syntaxes and an example for each function are described herein.
 

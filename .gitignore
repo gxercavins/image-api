@@ -1,3 +1,6 @@
+# yolo weights
+yolo/*.weights
+
 # compiled python files
 *.pyc
 
