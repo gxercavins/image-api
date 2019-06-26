@@ -10,7 +10,7 @@ app = Flask(__name__)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Pre-load the YOLO Detector
-yversions = ["v2"]#, "v3"]
+yversions = ["v2", "v3"]
 darknet = {}
 for yversion in yversions:
 	darknet[yversion] = pydarknet.Detector(bytes("yolo/yolo" + yversion + ".cfg", encoding="utf-8"), bytes("yolo/yolo" + yversion + ".weights", encoding="utf-8"), 0, bytes("yolo/coco.data", encoding="utf-8"))
@@ -169,6 +169,13 @@ def yolo():
 	img = cv2.imread(destination1)
 	img2 = pydarknet.Image(img)
 
+	destination = "/".join([target, 'yolo.jpg'])
+
+	if os.path.isfile(destination):
+		print("Existing file found at "+destination)
+		os.remove(destination)
+
+	print("Performing YOLO"+yversion+" on image at "+destination1+"...\nThis might take a while...")
 	start_time = time.time()
 	results = darknet[yversion].detect(img2)
 	end_time = time.time()
@@ -178,18 +185,24 @@ def yolo():
 	for cat, score, bounds in results:
 		x, y, w, h = bounds
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
-					 (int(x + w / 2), int(y + h / 2)), (255, 0, 0), thickness=2)
-		cv2.putText(img, str(cat.decode("utf-8")), (int(x), int(y)-10),
-					cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), thickness=1, lineType=cv2.LINE_AA)
+					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=2)
+		cv2.putText(img, str(cat.decode("utf-8")), (int(x-w/2), int(y-h/2-15)),
+					cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
 
 	# save and return image
-	destination = "/".join([target, 'temp.png'])
 	if os.path.isfile(destination):
-		os.remove(destination)
+		print("Something is wrong here...")
 
+	print("Writing processed image to "+destination)
 	cv2.imwrite(destination, img)
 
-	return send_image(destination)
+	while not os.path.isfile(destination):
+		print("Image processing...")
+
+	print("Image processed!")
+
+	return send_image('yolo.jpg')
+	#return render_template("image.html", image_name='yolo.jpg')
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
