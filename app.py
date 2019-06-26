@@ -3,6 +3,7 @@ import os
 from PIL import Image
 import pydarknet #we have to use pydarknet.Image and pydarknet.Detector since it conflicts with PIL Image
 import cv2
+import numpy
 import time
 
 app = Flask(__name__)
@@ -165,9 +166,8 @@ def yolo():
 	target = os.path.join(APP_ROOT, 'static/images')
 	destination1 = "/".join([target, filename1])
 
-	# img1 = Image.open(destination1)
-	img = cv2.imread(destination1)
-	img2 = pydarknet.Image(img)
+	img1 = Image.open(destination1)
+	img = np.asarray(img1)
 
 	destination = "/".join([target, 'temp.png'])
 
@@ -177,7 +177,7 @@ def yolo():
 
 	print("Performing YOLO"+yversion+" on image at "+destination1+"...\nThis might take a while...")
 	start_time = time.time()
-	results = darknet[yversion].detect(img2)
+	results = darknet[yversion].detect(pydarknet.Image(img))
 	end_time = time.time()
 	print(results)
 	print("Elapsed Time:", end_time - start_time)
@@ -196,7 +196,7 @@ def yolo():
 	im_pil.save(destination)
 
 	return send_image('temp.png')
-	#return render_template("image.html", image_name='yolo.jpg')
+	#return render_template("image.html", image_name='temp.png')
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
