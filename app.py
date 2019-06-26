@@ -190,9 +190,10 @@ def yolo():
 					cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
 
 	# save and return image
-	print("Writing processed image to "+destination)
-	
-	cv2.imwrite(destination, img)
+	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+	im_pil = Image.fromarray(img)
+	im_pil.save(destination)
 
 	return send_image('temp.png')
 	#return render_template("image.html", image_name='yolo.jpg')
