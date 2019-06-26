@@ -3,6 +3,7 @@ import os
 from PIL import Image
 import pydarknet #we have to use pydarknet.Image and pydarknet.Detector since it conflicts with PIL Image
 import cv2
+import time
 
 app = Flask(__name__)
 
@@ -157,7 +158,7 @@ def yolo():
 	yversion = request.form['yolo_version']
 
 	# startup the YOLO Detector
-	net = pydarknet.Detector(bytes("yolo/yolo" + yversion + ".cfg", encoding="utf-8"), bytes("yolo" + yversion + ".weights", encoding="utf-8"), 0, bytes("yolo/coco.data", encoding="utf-8"))
+	net = pydarknet.Detector(bytes("yolo/yolo" + yversion + ".cfg", encoding="utf-8"), bytes("yolo/yolo" + yversion + ".weights", encoding="utf-8"), 0, bytes("yolo/coco.data", encoding="utf-8"))
 
 	# open images
 	target = os.path.join(APP_ROOT, 'static/images')
@@ -165,7 +166,7 @@ def yolo():
 
 	# img1 = Image.open(destination1)
 	img = cv2.imread(destination1)
-	img2 = Image(img)
+	img2 = pydarknet.Image(img)
 
 	start_time = time.time()
 	results = net.detect(img2)

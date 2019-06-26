@@ -2,6 +2,6 @@ classes= 80
 train  = coco/trainvalno5k.txt
 valid  = coco_testdev
 #valid = coco_val_5k.list
-names = coco.names
+names = yolo/coco.names
 backup = backup/
 eval=coco

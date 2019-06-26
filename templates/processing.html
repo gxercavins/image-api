@@ -67,7 +67,7 @@
 
 				<h4>Blend</h4>
 				<form id="form-blend"" action=" {{ url_for('yolo') }}" method="POST" enctype="multipart/form-data">
-					<input type="radio" name="yolo_version" value="v2"> v2<br>
+					<input type="radio" name="yolo_version" value="v2" checked> v2<br>
 					<input type="radio" name="yolo_version" value="v3"> v3<br>
 					<button id="btnYolo" class="btn btn-lg btn-success" type="submit">YOLO!</button>
 					<input type="text" class="hidden" name="image" value="{{ image_name }}">

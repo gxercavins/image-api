@@ -10,3 +10,4 @@ numpy
 cython
 opencv-python
 yolo34py
+time
