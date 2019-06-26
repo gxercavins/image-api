@@ -168,6 +168,7 @@ def yolo():
 
 	img1 = Image.open(destination1)
 	img = np.asarray(img1)
+	img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
 	destination = "/".join([target, 'temp.png'])
 
