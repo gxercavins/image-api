@@ -37,7 +37,7 @@ def upload():
 	filename = upload.filename
 
 	# file support verification
-	ext = os.path.splitext(filename)[1]
+	ext = str.lower(os.path.splitext(filename)[1])
 	if (ext == ".jpg") or (ext == ".png") or (ext == ".bmp"):
 		print("File accepted")
 	else:
