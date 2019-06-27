@@ -28,6 +28,10 @@ docker run -d -p 5000:5000 image-api
 
 You can then view the application at http://localhost:5000
 
+### Deploying to IBM Cloud Private using Helm
+
+To see how to deploy this docker application into IBM Cloud Private, refer to the documentation [here](HELM_DEPLOY_ICP.md).
+
 ## Dependencies
 Python installation needs the `PIL` library (image processing), `flask` with its dependencies (`werkzeug`, `jinja2`, `markupsafe`, `itsdangerous`), testing libraries (`unittest` and `requests`) and `gunicorn` to provide an entrypoint for the live deployment. It is recommended to use the provided `requirements.txt` file:
 ```
