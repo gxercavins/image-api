@@ -43,6 +43,8 @@ def upload():
 	else:
 		return render_template("error.html", message="The selected file is not supported"), 400
 
+	filename = "uploaded" + ext
+
 	# save file
 	destination = "/".join([target, filename])
 	print("File saved to to:", destination)
@@ -188,7 +190,7 @@ def yolo():
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
 					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=2)
 		cv2.putText(img, str(cat.decode("utf-8")), (int(x-w/2), int(y-h/2-15)),
-					cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
+					cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
 
 	# save and return image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
