@@ -182,15 +182,20 @@ def yolo():
 	start_time = time.time()
 	results = darknet[yversion].detect(pydarknet.Image(img))
 	end_time = time.time()
-	print(results)
+	#print(results)
 	print("Elapsed Time:", end_time - start_time)
 
+	print("Detected:")
 	for cat, score, bounds in results:
 		x, y, w, h = bounds
+		label = str(cat.decode("utf-8"))
+		conf = str(score.decode("utf-8"))
+
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
 					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=2)
-		cv2.putText(img, str(cat.decode("utf-8")), (int(x-w/2), int(y-h/2+20)),
+		cv2.putText(img, label+", "+conf), (int(x-w/2), int(y-h/2+20)),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.2, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
+		print("\t{}, {}".format(label, conf))
 
 	# save and return image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
