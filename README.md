@@ -15,13 +15,13 @@ Other files have been included for GCP deployment: `app.yaml`, `appengine_config
 To build this application using Docker,
 
 ```
-docker build . -t image-api
+docker build . -t pyflask-yolo
 ```
 
 To run the application,
 
 ```
-docker run -d -p 5000:5000 image-api
+docker run -d -p 5000:5000 pyflask-yolo
 ```
 
 You can then view the application at http://localhost:5000
