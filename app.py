@@ -192,7 +192,7 @@ def yolo():
 		conf = str(score)
 
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
-					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=0.5)
+					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=1)
 		cv2.putText(img, label+", "+conf, (int(x-w/2), int(y-h/2)),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
 		print("\t{}, {}".format(label, conf))
