@@ -195,7 +195,11 @@ def yolo():
 					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=1)
 		cv2.putText(img, label+"\n"+conf, (int(x-w/2), int(y-h/2)),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
+<<<<<<< HEAD
 		print("> {}\t{}".format(label, conf))
+=======
+		print("\> {}\t{}".format(label, conf))
+>>>>>>> 45f0efe29d354becfbc1695e150d38e18723116d
 
 	# save and return image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
