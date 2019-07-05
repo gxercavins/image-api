@@ -189,7 +189,7 @@ def yolo():
 	for cat, score, bounds in results:
 		x, y, w, h = bounds
 		label = str(cat.decode("utf-8"))
-		conf = str(score.decode("utf-8"))
+		conf = str(score)
 
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
 					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=2)
