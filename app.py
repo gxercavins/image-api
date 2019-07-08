@@ -189,13 +189,15 @@ def yolo():
 	for cat, score, bounds in results:
 		x, y, w, h = bounds
 		label = str(cat.decode("utf-8"))
-		conf = str(score)*100
+		conf = float(score*100)
+
+		displayText = str("{}, {:.2f}%".format(label, conf))
 
 		cv2.rectangle(img, (int(x - w / 2), int(y - h / 2)),
 					 (int(x + w / 2), int(y + h / 2)), (0, 0, 255), thickness=1)
-		cv2.putText(img, "{}, {0:.2f}%".format(label, conf), (int(x-w/2), int(y-h/2)),
+		cv2.putText(img, displayText, (int(x-w/2), int(y-h/2)),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
-		print("> {}\t{0:.2f}".format(label, conf))
+		print("> "+displayText)
 
 	# save and return image
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
