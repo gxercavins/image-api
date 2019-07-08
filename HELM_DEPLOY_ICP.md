@@ -227,6 +227,8 @@ I have also changed the `app.py` to use the host `0.0.0.0` so that the entry poi
 The instructions to create the helm release are the same as that as [above](#creating-the-helm-release), with changes below:
 *(If you notice the screenshots having the name `pyimage-test`, that was the name of the old repository without the aforementioned YOLO implementation; just change it to `pyflask-yolo` accordingly)*
 
+If you would like to use a local or offline Docker image/repository, refer to the guide [below](#helm-release-with-offline-docker-repo).
+
 1. **Create the Helm Release**
 Within the master node, create a Helm release
 ```
@@ -312,3 +314,70 @@ Save the file.
 	The application should look something like this:
 
 	![Python Flask App](screenshots/helm11.png)
+
+### Helm Release with offline Docker repo
+It is possible that given a private cloud setup, your cloud might not have access to the Internet.
+
+In such a case, you will want to use a Docker image that has been saved, loaded into the machine, and subsequently have a Helm release created that uses this offline repository. Or if your Internet just sucks, you can use this method too.
+
+1. **Saving the Docker Image**
+First we need to save the docker image into a tar file using `docker save <image_id> --output <name_of_tarball>`.
+
+For example,
+```
+$ docker save 86671a907ae3 -o saved_image.tar
+```
+The docker image will then be saved as `saved_image.tar` in the above example.
+
+You can find the ID of your image using `docker images`:
+```
+$ docker images
+
+REPOSITORY             TAG                 IMAGE ID            CREATED             SIZE
+samleo8/pyflask-yolo   latest              86671a907ae3        3 days ago          1.77GB
+python                 3.6                 48c06762acf0        3 weeks ago         924MB
+debian                 wheezy              10fcec6d95c4        4 months ago        88.3MB
+```
+
+2. **Loading the Docker Image**
+Load the docker image using `docker load -i <tarball_file_from_step_1>`
+
+```
+$ docker load -i saved_image.tar
+$ docker images
+
+REPOSITORY                           TAG                 IMAGE ID            CREATED                  SIZE
+<none>                               <none>              86671a907ae3        Less than a second ago   1.77GB
+	...
+```
+Take note of the image ID from `docker images`.
+
+3. **Setting up local Docker repo**
+Inside the master node (use `sudo` if necessary),
+```
+$ docker login mycluster.icp:8500
+usename: xxx
+password: xxx
+```
+
+4. **Tagging the local Docker image**
+Using the docker image ID from step 2, we need to tag the image such that it uses the local repository,
+via the command `docker tag <image_id> mycluster.icp:8500/<namespace>/<repo_name>:<tag_name>`.
+
+For example,
+```
+$ docker tag 86671a907ae3 mycluster.icp:8500/default/pyflask-yolo
+$ docker images
+
+REPOSITORY                                TAG                 IMAGE ID            CREATED                  SIZE
+mycluster.icp:8500/default/pyflask-yolo   latest              86671a907ae3        Less than a second ago   1.77GB
+	...
+```
+
+5. **Changing the `values.yaml` file**
+a. Change the default value of `image: 	repository:` (`ngnix` by default) to the local docker repo `mycluster.icp:8500/default/pyflask-yolo`:
+
+![values.yaml file: repository](screenshots/helm11.png)
+
+6. **Complete rest of setup**
+For more instructions on how to install your own Helm release, refer to the sections [here](#creating-the-helm-release) and [here](#helm-release-with-your-own-gui-application).
