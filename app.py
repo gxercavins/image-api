@@ -3,6 +3,7 @@
 from flask import Flask, request, render_template, send_from_directory
 import os
 from PIL import Image
+import plat
 
 app = Flask(__name__)
 
@@ -57,7 +58,7 @@ def rotate():
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
-    img = img.rotate(-1*int(angle))
+    img = img.resize(plat.sky)
 
     # save and return image
     destination = "/".join([target, 'temp.png'])
@@ -71,7 +72,6 @@ def rotate():
 # flip filename 'vertical' or 'horizontal'
 @app.route("/flip", methods=["POST"])
 def flip():
-
     # retrieve parameters from html form
     if 'horizontal' in request.form['mode']:
         mode = 'horizontal'
@@ -138,7 +138,7 @@ def crop():
     # crop image and show
     if crop_possible:
         img = img.crop((x1, y1, x2, y2))
-        
+
         # save and return image
         destination = "/".join([target, 'temp.png'])
         if os.path.isfile(destination):
@@ -178,9 +178,9 @@ def blend():
         img2 = img2.convert('L')
 
     # blend and show image
-    img = Image.blend(img1, img2, float(alpha)/100)
+    img = Image.blend(img1, img2, float(alpha) / 100)
 
-     # save and return image
+    # save and return image
     destination = "/".join([target, 'temp.png'])
     if os.path.isfile(destination):
         os.remove(destination)
@@ -197,4 +197,3 @@ def send_image(filename):
 
 if __name__ == "__main__":
     app.run()
-
