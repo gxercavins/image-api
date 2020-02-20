@@ -14,7 +14,6 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 def main():
     return redirect("https://github.com/gxercavins/image-api/blob/master/README.md", code=302)
 
-
 # rotate filename the specified degrees
 @app.route("/rotate/<angle>/<filename>", methods=["GET"])
 def rotate(angle, filename):

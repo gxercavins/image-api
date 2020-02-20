@@ -57,19 +57,19 @@
  
             <div class="col-lg-6">
                 <h4>Rotate</h4>
-                <form id="form-rotate" action="{{ url_for('rotate') }}" method="POST" enctype="multipart/form-data"> 
-			  <input type="number" name="angle" min="-359" max="359" placeholder="degrees" required>        
-                  <button id="btnRotate" class="btn btn-lg btn-success" type="submit">Go</button>
+                <form id="form-rotate" action="{{ url_for('rotate') }}" method="POST" enctype="multipart/form-data">
+<!--			  <input type="number" name="angle" min="-359" max="359" placeholder="degrees" required>-->
+                  <button id="btnRotate" class="btn btn-lg btn-success" type="submit">Gerar NOW</button>
 	  		  <input type="text" class="hidden" name="image" value="{{ image_name }}">
                 </form>
- 
+
                 <h4>Blend</h4>
-                <form id="form-blend"" action="{{ url_for('blend') }}" method="POST" enctype="multipart/form-data">  
-		       <input type="number" name="alpha" placeholder="alpha(%)" min="0" max="100" required>               
+                <form id="form-blend"" action="{{ url_for('blend') }}" method="POST" enctype="multipart/form-data">
+		       <input type="number" name="alpha" placeholder="alpha(%)" min="0" max="100" required>
                   <button id="btnBlend" class="btn btn-lg btn-success" type="submit">Go</button>
 	  	       <input type="text" class="hidden" name="image" value="{{ image_name }}">
                 </form>
-                
+
             </div>
         </div>
  
