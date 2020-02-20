@@ -50,7 +50,7 @@ def upload():
 @app.route("/rotate", methods=["POST"])
 def rotate():
     # retrieve parameters from html form
-    angle = request.form['angle']
+    #angle = request.form['angle']
     filename = request.form['image']
 
     # open and process image
@@ -58,7 +58,7 @@ def rotate():
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
-    img = img.resize(plat.sky)
+    img = img.resize(plat.now)
 
     # save and return image
     destination = "/".join([target, 'temp.png'])
