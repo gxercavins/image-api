@@ -2,7 +2,7 @@
 
 from flask import Flask, request, render_template, send_from_directory
 import os
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 app = Flask(__name__)
 
