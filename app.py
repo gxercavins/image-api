@@ -188,6 +188,50 @@ def blend():
 
     return send_image('temp.png')
 
+@app.route("/grayscale", methods=["POST"])
+def grayscale():
+    # retrieve parameters from html form
+    # angle = request.form['angle']
+    filename = request.form['image']
+
+    # open and process image
+    target = os.path.join(APP_ROOT, 'static/images')
+    destination = "/".join([target, filename])
+
+    img = Image.open(destination)
+    img = img.convert("L")
+
+    # save and return image
+    destination = "/".join([target, 'temp.png'])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img.save(destination)
+
+    return send_image('temp.png')
+
+@app.route("/sharpen", methods=["POST"])
+def sharpen():
+    # retrieve parameters from html form
+    # angle = request.form['angle']
+    filename = request.form['image']
+
+    # open and process image
+    target = os.path.join(APP_ROOT, 'static/images')
+    destination = "/".join([target, filename])
+
+    img = Image.open(destination)
+    enhancer = ImageEnhance.Sharpness(img)
+    factor = 5
+    img = enhancer.enhance(factor)
+
+    # save and return image
+    destination = "/".join([target, 'temp.png'])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img.save(destination)
+
+    return send_image('temp.png')
+
 
 # retrieve file from 'static/images' directory
 @app.route('/static/images/<filename>')
