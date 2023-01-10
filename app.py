@@ -12,13 +12,13 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 # default access page
 @app.route("/")
 def main():
-    return render_template('index.html')
+    return render_template("index.html")
 
 
 # upload selected image and forward to processing page
 @app.route("/upload", methods=["POST"])
 def upload():
-    target = os.path.join(APP_ROOT, 'static/images/')
+    target = os.path.join(APP_ROOT, "static/images/")
 
     # create image directory if not found
     if not os.path.isdir(target):
@@ -34,7 +34,10 @@ def upload():
     if (ext == ".jpg") or (ext == ".png") or (ext == ".bmp"):
         print("File accepted")
     else:
-        return render_template("error.html", message="The selected file is not supported"), 400
+        return (
+            render_template("error.html", message="The selected file is not supported"),
+            400,
+        )
 
     # save file
     destination = "/".join([target, filename])
@@ -49,23 +52,23 @@ def upload():
 @app.route("/rotate", methods=["POST"])
 def rotate():
     # retrieve parameters from html form
-    angle = request.form['angle']
-    filename = request.form['image']
+    angle = request.form["angle"]
+    filename = request.form["image"]
 
     # open and process image
-    target = os.path.join(APP_ROOT, 'static/images')
+    target = os.path.join(APP_ROOT, "static/images")
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
-    img = img.rotate(-1*int(angle))
+    img = img.rotate(-1 * int(angle))
 
     # save and return image
-    destination = "/".join([target, 'temp.png'])
+    destination = "/".join([target, "temp.png"])
     if os.path.isfile(destination):
         os.remove(destination)
     img.save(destination)
 
-    return send_image('temp.png')
+    return send_image("temp.png")
 
 
 # flip filename 'vertical' or 'horizontal'
@@ -73,46 +76,51 @@ def rotate():
 def flip():
 
     # retrieve parameters from html form
-    if 'horizontal' in request.form['mode']:
-        mode = 'horizontal'
-    elif 'vertical' in request.form['mode']:
-        mode = 'vertical'
+    if "horizontal" in request.form["mode"]:
+        mode = "horizontal"
+    elif "vertical" in request.form["mode"]:
+        mode = "vertical"
     else:
-        return render_template("error.html", message="Mode not supported (vertical - horizontal)"), 400
-    filename = request.form['image']
+        return (
+            render_template(
+                "error.html", message="Mode not supported (vertical - horizontal)"
+            ),
+            400,
+        )
+    filename = request.form["image"]
 
     # open and process image
-    target = os.path.join(APP_ROOT, 'static/images')
+    target = os.path.join(APP_ROOT, "static/images")
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
 
-    if mode == 'horizontal':
+    if mode == "horizontal":
         img = img.transpose(Image.FLIP_LEFT_RIGHT)
     else:
         img = img.transpose(Image.FLIP_TOP_BOTTOM)
 
     # save and return image
-    destination = "/".join([target, 'temp.png'])
+    destination = "/".join([target, "temp.png"])
     if os.path.isfile(destination):
         os.remove(destination)
     img.save(destination)
 
-    return send_image('temp.png')
+    return send_image("temp.png")
 
 
 # crop filename from (x1,y1) to (x2,y2)
 @app.route("/crop", methods=["POST"])
 def crop():
     # retrieve parameters from html form
-    x1 = int(request.form['x1'])
-    y1 = int(request.form['y1'])
-    x2 = int(request.form['x2'])
-    y2 = int(request.form['y2'])
-    filename = request.form['image']
+    x1 = int(request.form["x1"])
+    y1 = int(request.form["y1"])
+    x2 = int(request.form["x2"])
+    y2 = int(request.form["y2"])
+    filename = request.form["image"]
 
     # open image
-    target = os.path.join(APP_ROOT, 'static/images')
+    target = os.path.join(APP_ROOT, "static/images")
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
@@ -138,28 +146,28 @@ def crop():
     # crop image and show
     if crop_possible:
         img = img.crop((x1, y1, x2, y2))
-        
+
         # save and return image
-        destination = "/".join([target, 'temp.png'])
+        destination = "/".join([target, "temp.png"])
         if os.path.isfile(destination):
             os.remove(destination)
         img.save(destination)
-        return send_image('temp.png')
+        return send_image("temp.png")
     else:
         return render_template("error.html", message="Crop dimensions not valid"), 400
-    return '', 204
+    return "", 204
 
 
 # blend filename with stock photo and alpha parameter
 @app.route("/blend", methods=["POST"])
 def blend():
     # retrieve parameters from html form
-    alpha = request.form['alpha']
-    filename1 = request.form['image']
+    alpha = request.form["alpha"]
+    filename1 = request.form["image"]
 
     # open images
-    target = os.path.join(APP_ROOT, 'static/images')
-    filename2 = 'blend.jpg'
+    target = os.path.join(APP_ROOT, "static/images")
+    filename2 = "blend.jpg"
     destination1 = "/".join([target, filename1])
     destination2 = "/".join([target, filename2])
 
@@ -175,48 +183,86 @@ def blend():
 
     # if image in gray scale, convert stock image to monochrome
     if len(img1.mode) < 3:
-        img2 = img2.convert('L')
+        img2 = img2.convert("L")
 
     # blend and show image
-    img = Image.blend(img1, img2, float(alpha)/100)
+    img = Image.blend(img1, img2, float(alpha) / 100)
 
-     # save and return image
-    destination = "/".join([target, 'temp.png'])
+    # save and return image
+    destination = "/".join([target, "temp.png"])
     if os.path.isfile(destination):
         os.remove(destination)
     img.save(destination)
 
-    return send_image('temp.png')
+    return send_image("temp.png")
+
 
 @app.route("/grayscale", methods=["POST"])
 def grayscale():
     # retrieve parameters from html form
     # angle = request.form['angle']
-    filename = request.form['image']
+    filename = request.form["image"]
 
     # open and process image
-    target = os.path.join(APP_ROOT, 'static/images')
+    target = os.path.join(APP_ROOT, "static/images")
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
     img = img.convert("L")
 
     # save and return image
-    destination = "/".join([target, 'temp.png'])
+    destination = "/".join([target, "temp.png"])
     if os.path.isfile(destination):
         os.remove(destination)
     img.save(destination)
 
-    return send_image('temp.png')
+    return send_image("temp.png")
+
+
+@app.route("/cartoonize", methods=["POST"])
+def cartoonize():
+    filename = request.form["image"]
+
+    target = os.path.join(APP_ROOT, "static/images")
+    destination = "/".join([target, filename])
+
+    img = Image.open(destination)
+
+    # pil_image = PIL.Image.open('image.jpg')
+    opencvImage = cv2.cvtColor(numpy.array(img), cv2.COLOR_RGB2BGR)
+
+    originalmage = cv2.cvtColor(opencvImage, cv2.COLOR_BGR2RGB)
+
+    grayScaleImage = cv2.cvtColor(originalmage, cv2.COLOR_BGR2GRAY)
+
+    smoothGrayScale = cv2.medianBlur(grayScaleImage, 5)
+
+    getEdge = cv2.adaptiveThreshold(
+        smoothGrayScale, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 9, 9
+    )
+
+    colorImage = cv2.bilateralFilter(originalmage, 9, 512, 512)
+    cartoonImage = cv2.bitwise_and(colorImage, colorImage, mask=getEdge)
+
+    ReSized6 = cv2.resize(cartoonImage, (512, 512))
+    img = Image.fromarray(ReSized6)
+
+    destination = "/".join([target, "temp.png"])
+    if os.path.isfile(destination):
+        os.remove(destination)
+    img.save(destination)
+
+    return send_image("temp.png")
+
 
 @app.route("/sharpen", methods=["POST"])
 def sharpen():
     # retrieve parameters from html form
     # angle = request.form['angle']
-    filename = request.form['image']
+    filename = request.form["image"]
 
     # open and process image
-    target = os.path.join(APP_ROOT, 'static/images')
+    target = os.path.join(APP_ROOT, "static/images")
     destination = "/".join([target, filename])
 
     img = Image.open(destination)
@@ -225,20 +271,19 @@ def sharpen():
     img = enhancer.enhance(factor)
 
     # save and return image
-    destination = "/".join([target, 'temp.png'])
+    destination = "/".join([target, "temp.png"])
     if os.path.isfile(destination):
         os.remove(destination)
     img.save(destination)
 
-    return send_image('temp.png')
+    return send_image("temp.png")
 
 
 # retrieve file from 'static/images' directory
-@app.route('/static/images/<filename>')
+@app.route("/static/images/<filename>")
 def send_image(filename):
     return send_from_directory("static/images", filename)
 
 
 if __name__ == "__main__":
     app.run()
-

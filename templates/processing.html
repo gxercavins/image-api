@@ -90,6 +90,16 @@
 
 
             </div>
+
+            <div class="col-lg-6">
+                <h4>Catoonize</h4>
+                <form id="form-cartoonize" action="{{ url_for('cartoonize') }}" method="POST"
+                    enctype="multipart/form-data">
+                    <button id="btnCartoon" class="btn btn-lg btn-success" type="submit">Cartoonize</button>
+                    <input type="text" class="hidden" name="image" value="{{ image_name }}">
+                </form>
+
+            </div>
         </div>
 
         <footer class="footer">
